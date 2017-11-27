@@ -450,7 +450,7 @@ namespace RobotofCouldminds
                 }
                 else if (rcvBuf.Length == 40)
                 {
-
+                    string[] Sensor = (Convert.ToString(rcvBuf[25], 2)).Split();
                 }
             }
         }
