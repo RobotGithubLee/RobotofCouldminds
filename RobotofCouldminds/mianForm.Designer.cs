@@ -54,6 +54,9 @@
             this.label15 = new System.Windows.Forms.Label();
             this.label16 = new System.Windows.Forms.Label();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.buttonClearText = new System.Windows.Forms.Button();
+            this.label17 = new System.Windows.Forms.Label();
+            this.textBoxElectric = new System.Windows.Forms.TextBox();
             this.myButtonCheckCloudUp = new RobotofCouldminds.myButtonCheck();
             this.myButtonCheckBrake = new RobotofCouldminds.myButtonCheck();
             this.myButtonCheckCloudDown = new RobotofCouldminds.myButtonCheck();
@@ -66,7 +69,12 @@
             this.myButtonCheckFrontFlashingLight = new RobotofCouldminds.myButtonCheck();
             this.myButtonCheckRearLight = new RobotofCouldminds.myButtonCheck();
             this.myButtonCheckHeadlingt = new RobotofCouldminds.myButtonCheck();
-            this.buttonClearText = new System.Windows.Forms.Button();
+            this.textBoxVoltage = new System.Windows.Forms.TextBox();
+            this.label18 = new System.Windows.Forms.Label();
+            this.textBoxCurrent = new System.Windows.Forms.TextBox();
+            this.label19 = new System.Windows.Forms.Label();
+            this.textBoxTemperature = new System.Windows.Forms.TextBox();
+            this.label20 = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPort)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.UpDownTurn)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.UpDownSpeed)).BeginInit();
@@ -98,7 +106,7 @@
             // textBoxLog
             // 
             this.textBoxLog.Location = new System.Drawing.Point(3, 241);
-            this.textBoxLog.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.textBoxLog.Margin = new System.Windows.Forms.Padding(2);
             this.textBoxLog.Multiline = true;
             this.textBoxLog.Name = "textBoxLog";
             this.textBoxLog.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
@@ -138,7 +146,7 @@
             "14",
             "15"});
             this.comboBoxTrackNum.Location = new System.Drawing.Point(126, 75);
-            this.comboBoxTrackNum.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.comboBoxTrackNum.Margin = new System.Windows.Forms.Padding(2);
             this.comboBoxTrackNum.Name = "comboBoxTrackNum";
             this.comboBoxTrackNum.RightToLeft = System.Windows.Forms.RightToLeft.No;
             this.comboBoxTrackNum.Size = new System.Drawing.Size(53, 29);
@@ -168,7 +176,7 @@
             "14",
             "15"});
             this.comboBoxRobotNum.Location = new System.Drawing.Point(126, 41);
-            this.comboBoxRobotNum.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.comboBoxRobotNum.Margin = new System.Windows.Forms.Padding(2);
             this.comboBoxRobotNum.Name = "comboBoxRobotNum";
             this.comboBoxRobotNum.Size = new System.Drawing.Size(53, 29);
             this.comboBoxRobotNum.TabIndex = 55;
@@ -206,7 +214,7 @@
             0,
             0});
             this.UpDownTurn.Location = new System.Drawing.Point(126, 107);
-            this.UpDownTurn.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.UpDownTurn.Margin = new System.Windows.Forms.Padding(2);
             this.UpDownTurn.Maximum = new decimal(new int[] {
             127,
             0,
@@ -231,7 +239,7 @@
             0,
             0});
             this.UpDownSpeed.Location = new System.Drawing.Point(126, 144);
-            this.UpDownSpeed.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.UpDownSpeed.Margin = new System.Windows.Forms.Padding(2);
             this.UpDownSpeed.Maximum = new decimal(new int[] {
             32767,
             0,
@@ -395,6 +403,36 @@
             this.timer1.Interval = 500;
             this.timer1.Tick += new System.EventHandler(this.timer1_Tick);
             // 
+            // buttonClearText
+            // 
+            this.buttonClearText.Location = new System.Drawing.Point(449, 241);
+            this.buttonClearText.Margin = new System.Windows.Forms.Padding(2);
+            this.buttonClearText.Name = "buttonClearText";
+            this.buttonClearText.Size = new System.Drawing.Size(50, 20);
+            this.buttonClearText.TabIndex = 114;
+            this.buttonClearText.Text = "清空";
+            this.buttonClearText.UseVisualStyleBackColor = true;
+            this.buttonClearText.Click += new System.EventHandler(this.buttonClearText_Click);
+            // 
+            // label17
+            // 
+            this.label17.AutoSize = true;
+            this.label17.Font = new System.Drawing.Font("宋体", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label17.Location = new System.Drawing.Point(556, 22);
+            this.label17.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label17.Name = "label17";
+            this.label17.Size = new System.Drawing.Size(66, 27);
+            this.label17.TabIndex = 115;
+            this.label17.Text = "电量";
+            // 
+            // textBoxElectric
+            // 
+            this.textBoxElectric.Font = new System.Drawing.Font("宋体", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.textBoxElectric.Location = new System.Drawing.Point(617, 13);
+            this.textBoxElectric.Name = "textBoxElectric";
+            this.textBoxElectric.Size = new System.Drawing.Size(72, 38);
+            this.textBoxElectric.TabIndex = 116;
+            // 
             // myButtonCheckCloudUp
             // 
             this.myButtonCheckCloudUp.BackColor = System.Drawing.Color.Transparent;
@@ -402,7 +440,7 @@
             this.myButtonCheckCloudUp.CheckStyleX = RobotofCouldminds.myButtonCheck.CheckStyle.style1;
             this.myButtonCheckCloudUp.Cursor = System.Windows.Forms.Cursors.Hand;
             this.myButtonCheckCloudUp.Location = new System.Drawing.Point(452, 185);
-            this.myButtonCheckCloudUp.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.myButtonCheckCloudUp.Margin = new System.Windows.Forms.Padding(1);
             this.myButtonCheckCloudUp.Name = "myButtonCheckCloudUp";
             this.myButtonCheckCloudUp.Size = new System.Drawing.Size(47, 24);
             this.myButtonCheckCloudUp.TabIndex = 112;
@@ -415,7 +453,7 @@
             this.myButtonCheckBrake.CheckStyleX = RobotofCouldminds.myButtonCheck.CheckStyle.style1;
             this.myButtonCheckBrake.Cursor = System.Windows.Forms.Cursors.Hand;
             this.myButtonCheckBrake.Location = new System.Drawing.Point(452, 49);
-            this.myButtonCheckBrake.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.myButtonCheckBrake.Margin = new System.Windows.Forms.Padding(1);
             this.myButtonCheckBrake.Name = "myButtonCheckBrake";
             this.myButtonCheckBrake.Size = new System.Drawing.Size(47, 24);
             this.myButtonCheckBrake.TabIndex = 111;
@@ -428,7 +466,7 @@
             this.myButtonCheckCloudDown.CheckStyleX = RobotofCouldminds.myButtonCheck.CheckStyle.style1;
             this.myButtonCheckCloudDown.Cursor = System.Windows.Forms.Cursors.Hand;
             this.myButtonCheckCloudDown.Location = new System.Drawing.Point(292, 185);
-            this.myButtonCheckCloudDown.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.myButtonCheckCloudDown.Margin = new System.Windows.Forms.Padding(1);
             this.myButtonCheckCloudDown.Name = "myButtonCheckCloudDown";
             this.myButtonCheckCloudDown.Size = new System.Drawing.Size(47, 24);
             this.myButtonCheckCloudDown.TabIndex = 109;
@@ -441,7 +479,7 @@
             this.myButtonCheckModel.CheckStyleX = RobotofCouldminds.myButtonCheck.CheckStyle.style1;
             this.myButtonCheckModel.Cursor = System.Windows.Forms.Cursors.Hand;
             this.myButtonCheckModel.Location = new System.Drawing.Point(452, 150);
-            this.myButtonCheckModel.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.myButtonCheckModel.Margin = new System.Windows.Forms.Padding(1);
             this.myButtonCheckModel.Name = "myButtonCheckModel";
             this.myButtonCheckModel.Size = new System.Drawing.Size(47, 24);
             this.myButtonCheckModel.TabIndex = 107;
@@ -454,7 +492,7 @@
             this.myButtonCheckVoice.CheckStyleX = RobotofCouldminds.myButtonCheck.CheckStyle.style1;
             this.myButtonCheckVoice.Cursor = System.Windows.Forms.Cursors.Hand;
             this.myButtonCheckVoice.Location = new System.Drawing.Point(292, 150);
-            this.myButtonCheckVoice.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.myButtonCheckVoice.Margin = new System.Windows.Forms.Padding(1);
             this.myButtonCheckVoice.Name = "myButtonCheckVoice";
             this.myButtonCheckVoice.Size = new System.Drawing.Size(47, 24);
             this.myButtonCheckVoice.TabIndex = 105;
@@ -467,7 +505,7 @@
             this.myButtonCheckHorn.CheckStyleX = RobotofCouldminds.myButtonCheck.CheckStyle.style1;
             this.myButtonCheckHorn.Cursor = System.Windows.Forms.Cursors.Hand;
             this.myButtonCheckHorn.Location = new System.Drawing.Point(452, 113);
-            this.myButtonCheckHorn.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.myButtonCheckHorn.Margin = new System.Windows.Forms.Padding(1);
             this.myButtonCheckHorn.Name = "myButtonCheckHorn";
             this.myButtonCheckHorn.Size = new System.Drawing.Size(47, 24);
             this.myButtonCheckHorn.TabIndex = 103;
@@ -480,7 +518,7 @@
             this.myButtonCheckTurnRight.CheckStyleX = RobotofCouldminds.myButtonCheck.CheckStyle.style1;
             this.myButtonCheckTurnRight.Cursor = System.Windows.Forms.Cursors.Hand;
             this.myButtonCheckTurnRight.Location = new System.Drawing.Point(452, 81);
-            this.myButtonCheckTurnRight.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.myButtonCheckTurnRight.Margin = new System.Windows.Forms.Padding(1);
             this.myButtonCheckTurnRight.Name = "myButtonCheckTurnRight";
             this.myButtonCheckTurnRight.Size = new System.Drawing.Size(47, 24);
             this.myButtonCheckTurnRight.TabIndex = 101;
@@ -493,7 +531,7 @@
             this.myButtonCheckTurnLeft.CheckStyleX = RobotofCouldminds.myButtonCheck.CheckStyle.style1;
             this.myButtonCheckTurnLeft.Cursor = System.Windows.Forms.Cursors.Hand;
             this.myButtonCheckTurnLeft.Location = new System.Drawing.Point(292, 79);
-            this.myButtonCheckTurnLeft.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.myButtonCheckTurnLeft.Margin = new System.Windows.Forms.Padding(1);
             this.myButtonCheckTurnLeft.Name = "myButtonCheckTurnLeft";
             this.myButtonCheckTurnLeft.Size = new System.Drawing.Size(47, 24);
             this.myButtonCheckTurnLeft.TabIndex = 99;
@@ -506,7 +544,7 @@
             this.myButtonCheckArmLight.CheckStyleX = RobotofCouldminds.myButtonCheck.CheckStyle.style1;
             this.myButtonCheckArmLight.Cursor = System.Windows.Forms.Cursors.Hand;
             this.myButtonCheckArmLight.Location = new System.Drawing.Point(292, 116);
-            this.myButtonCheckArmLight.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.myButtonCheckArmLight.Margin = new System.Windows.Forms.Padding(1);
             this.myButtonCheckArmLight.Name = "myButtonCheckArmLight";
             this.myButtonCheckArmLight.Size = new System.Drawing.Size(47, 24);
             this.myButtonCheckArmLight.TabIndex = 97;
@@ -519,7 +557,7 @@
             this.myButtonCheckFrontFlashingLight.CheckStyleX = RobotofCouldminds.myButtonCheck.CheckStyle.style1;
             this.myButtonCheckFrontFlashingLight.Cursor = System.Windows.Forms.Cursors.Hand;
             this.myButtonCheckFrontFlashingLight.Location = new System.Drawing.Point(292, 49);
-            this.myButtonCheckFrontFlashingLight.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.myButtonCheckFrontFlashingLight.Margin = new System.Windows.Forms.Padding(1);
             this.myButtonCheckFrontFlashingLight.Name = "myButtonCheckFrontFlashingLight";
             this.myButtonCheckFrontFlashingLight.Size = new System.Drawing.Size(47, 24);
             this.myButtonCheckFrontFlashingLight.TabIndex = 95;
@@ -532,7 +570,7 @@
             this.myButtonCheckRearLight.CheckStyleX = RobotofCouldminds.myButtonCheck.CheckStyle.style1;
             this.myButtonCheckRearLight.Cursor = System.Windows.Forms.Cursors.Hand;
             this.myButtonCheckRearLight.Location = new System.Drawing.Point(452, 13);
-            this.myButtonCheckRearLight.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.myButtonCheckRearLight.Margin = new System.Windows.Forms.Padding(1);
             this.myButtonCheckRearLight.Name = "myButtonCheckRearLight";
             this.myButtonCheckRearLight.Size = new System.Drawing.Size(47, 24);
             this.myButtonCheckRearLight.TabIndex = 93;
@@ -545,28 +583,82 @@
             this.myButtonCheckHeadlingt.CheckStyleX = RobotofCouldminds.myButtonCheck.CheckStyle.style1;
             this.myButtonCheckHeadlingt.Cursor = System.Windows.Forms.Cursors.Hand;
             this.myButtonCheckHeadlingt.Location = new System.Drawing.Point(292, 13);
-            this.myButtonCheckHeadlingt.Margin = new System.Windows.Forms.Padding(1, 1, 1, 1);
+            this.myButtonCheckHeadlingt.Margin = new System.Windows.Forms.Padding(1);
             this.myButtonCheckHeadlingt.Name = "myButtonCheckHeadlingt";
             this.myButtonCheckHeadlingt.Size = new System.Drawing.Size(47, 24);
             this.myButtonCheckHeadlingt.TabIndex = 91;
             this.myButtonCheckHeadlingt.Click += new System.EventHandler(this.myButtonCheckHeadlingt_Click);
             // 
-            // buttonClearText
+            // textBoxVoltage
             // 
-            this.buttonClearText.Location = new System.Drawing.Point(449, 241);
-            this.buttonClearText.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
-            this.buttonClearText.Name = "buttonClearText";
-            this.buttonClearText.Size = new System.Drawing.Size(50, 20);
-            this.buttonClearText.TabIndex = 114;
-            this.buttonClearText.Text = "清空";
-            this.buttonClearText.UseVisualStyleBackColor = true;
-            this.buttonClearText.Click += new System.EventHandler(this.buttonClearText_Click);
+            this.textBoxVoltage.Font = new System.Drawing.Font("宋体", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.textBoxVoltage.Location = new System.Drawing.Point(770, 13);
+            this.textBoxVoltage.Name = "textBoxVoltage";
+            this.textBoxVoltage.Size = new System.Drawing.Size(72, 38);
+            this.textBoxVoltage.TabIndex = 118;
+            // 
+            // label18
+            // 
+            this.label18.AutoSize = true;
+            this.label18.Font = new System.Drawing.Font("宋体", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label18.Location = new System.Drawing.Point(708, 22);
+            this.label18.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label18.Name = "label18";
+            this.label18.Size = new System.Drawing.Size(66, 27);
+            this.label18.TabIndex = 117;
+            this.label18.Text = "电压";
+            // 
+            // textBoxCurrent
+            // 
+            this.textBoxCurrent.Font = new System.Drawing.Font("宋体", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.textBoxCurrent.Location = new System.Drawing.Point(617, 75);
+            this.textBoxCurrent.Name = "textBoxCurrent";
+            this.textBoxCurrent.Size = new System.Drawing.Size(72, 38);
+            this.textBoxCurrent.TabIndex = 120;
+            // 
+            // label19
+            // 
+            this.label19.AutoSize = true;
+            this.label19.Font = new System.Drawing.Font("宋体", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label19.Location = new System.Drawing.Point(556, 84);
+            this.label19.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label19.Name = "label19";
+            this.label19.Size = new System.Drawing.Size(66, 27);
+            this.label19.TabIndex = 119;
+            this.label19.Text = "电流";
+            // 
+            // textBoxTemperature
+            // 
+            this.textBoxTemperature.Font = new System.Drawing.Font("宋体", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.textBoxTemperature.Location = new System.Drawing.Point(770, 70);
+            this.textBoxTemperature.Name = "textBoxTemperature";
+            this.textBoxTemperature.Size = new System.Drawing.Size(72, 38);
+            this.textBoxTemperature.TabIndex = 122;
+            // 
+            // label20
+            // 
+            this.label20.AutoSize = true;
+            this.label20.Font = new System.Drawing.Font("宋体", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.label20.Location = new System.Drawing.Point(709, 79);
+            this.label20.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
+            this.label20.Name = "label20";
+            this.label20.Size = new System.Drawing.Size(66, 27);
+            this.label20.TabIndex = 121;
+            this.label20.Text = "电温";
             // 
             // mianForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(793, 423);
+            this.ClientSize = new System.Drawing.Size(877, 423);
+            this.Controls.Add(this.textBoxTemperature);
+            this.Controls.Add(this.label20);
+            this.Controls.Add(this.textBoxCurrent);
+            this.Controls.Add(this.label19);
+            this.Controls.Add(this.textBoxVoltage);
+            this.Controls.Add(this.label18);
+            this.Controls.Add(this.textBoxElectric);
+            this.Controls.Add(this.label17);
             this.Controls.Add(this.buttonClearText);
             this.Controls.Add(this.label16);
             this.Controls.Add(this.myButtonCheckCloudUp);
@@ -605,7 +697,7 @@
             this.Controls.Add(this.pictureBoxPort);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
+            this.Margin = new System.Windows.Forms.Padding(2);
             this.Name = "mianForm";
             this.Text = "Robot";
             ((System.ComponentModel.ISupportInitialize)(this.pictureBoxPort)).EndInit();
@@ -655,6 +747,14 @@
         private myButtonCheck myButtonCheckCloudUp;
         private System.Windows.Forms.Timer timer1;
         private System.Windows.Forms.Button buttonClearText;
+        private System.Windows.Forms.Label label17;
+        private System.Windows.Forms.TextBox textBoxElectric;
+        private System.Windows.Forms.TextBox textBoxVoltage;
+        private System.Windows.Forms.Label label18;
+        private System.Windows.Forms.TextBox textBoxCurrent;
+        private System.Windows.Forms.Label label19;
+        private System.Windows.Forms.TextBox textBoxTemperature;
+        private System.Windows.Forms.Label label20;
     }
 }
 

@@ -220,15 +220,13 @@ namespace RobotofCouldminds
                 AngleAndSpeed[0] = (byte)(UpDownTurn.Value);
             else
                 AngleAndSpeed[0] = (byte)(UpDownTurn.Value + 256);
-            sendBuf(Seq, 0x80, State, AngleAndSpeed);
         }
 
         private void UpDownSpeed_ValueChanged(object sender, EventArgs e)
         {
             byte[] speed = BitConverter.GetBytes((short)UpDownSpeed.Value);
-            AngleAndSpeed[1] = speed[0];
-            AngleAndSpeed[2] = speed[1];
-            sendBuf(Seq, 0x80, State, AngleAndSpeed);
+            AngleAndSpeed[1] = speed[1];
+            AngleAndSpeed[2] = speed[0];
         }
 
 
@@ -454,7 +452,8 @@ namespace RobotofCouldminds
                 else if (rcvBuf.Length >= 40&& rcvBuf[0]==0xAA)
                 {
                     string[] Sensor = (Convert.ToString(rcvBuf[25], 2)).Split();
-                    Log("接受25：" + Convert.ToString(rcvBuf[25], 2));
+
+                    textBoxElectric.Text = (rcvBuf[26]).ToString();
                 }
             }
         }
