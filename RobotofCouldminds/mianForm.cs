@@ -23,7 +23,9 @@ namespace RobotofCouldminds
         serialPortClass serialPortC;
         SerialPort serialPort = new SerialPort();  //
 
-        List<byte> sendData= new List<byte>();  //发送的Buf
+        List<byte> sendData = new List<byte>();  //发送的Buf
+
+        bool isSendBufEnable = true;
 
         byte[] off = { 0x0 };
         byte[] on = { 0x1 };
@@ -31,14 +33,11 @@ namespace RobotofCouldminds
 
 
         byte Seq = 0x1;
-        byte Cmd = 0x80;
         byte State = 0x00;
-
         byte RobotNum = 0x0;
-        byte sData = 0x0;
-        byte []ForntAngle = { 0x0 };
-        short speed = 0;
-        int Led = 0x0;
+        byte[] AngleAndSpeed = new byte[3];
+
+
 
 
 
@@ -59,7 +58,7 @@ namespace RobotofCouldminds
             {
                 SerialPortComboBox.Items.Add(serialPortC.getPorts()[j]);
             }
-  
+
             startTime = TimeZone.CurrentTimeZone.ToLocalTime(new System.DateTime(1970, 1, 1)); // 当地时区      
         }
 
@@ -107,8 +106,8 @@ namespace RobotofCouldminds
 
         private void Log(string txt)
         {
-            textBoxLog.AppendText(DateTime.Now.ToString()+"\t\n");//"HH:mm:ss"
-            textBoxLog.AppendText(txt + "\t\n\t\n");
+            textBoxLog.AppendText(DateTime.Now.ToString() + "\t\n");//"HH:mm:ss"
+            textBoxLog.AppendText(txt + "\t\n");
         }
 
         private void SerialPortComboBox_SelectedIndexChanged(object sender, EventArgs e)
@@ -127,6 +126,7 @@ namespace RobotofCouldminds
                 {
                     pictureBoxPort.BackColor = Color.Green;
                     Log(serialPort.PortName + " Open");
+                    timer1.Enabled = true;
                 }
                 else
                 {
@@ -139,7 +139,22 @@ namespace RobotofCouldminds
             }
         }
 
-        private bool sendBuf(byte Seq,byte Cmd, byte State, byte[] Data)
+        private void pictureBoxPort_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                serialPort.Close();
+                SerialPortComboBox.Text = "COM0";
+                pictureBoxPort.BackColor = Color.Red;
+                timer1.Enabled = false;
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.ToString());
+            }
+        }
+
+        private bool sendBuf(byte Seq, byte Cmd, byte State, byte[] Data)
         {
 
             List<byte> dataList = new List<byte>();
@@ -148,16 +163,17 @@ namespace RobotofCouldminds
             dataList.AddRange(Data);
 
 
-            byte X=0x0;
-            int Len =dataList.Count;
+            byte X = 0x0;
+            int Len = dataList.Count;
             if (Len > 0)
             {
                 X = dataList[0];
                 for (int i = 1; i < Len; i++)
                 {
                     X ^= dataList[i];
-                }         
+                }
             }
+
             sendData.Clear();
             sendData.Add(0xAA);        //Head
             sendData.Add(Seq);         //Seq
@@ -167,40 +183,13 @@ namespace RobotofCouldminds
             sendData.AddRange(dataList);   //Data
             sendData.Add(X);           //异或校验位
 
-            Log("发送：" + string.Join(" ", sendData.ToArray()));
-            return true;
-            serialPortC.WriteBuf(serialPort,sendData.ToArray());
+            serialPortC.WriteBuf(serialPort, sendData.ToArray());
+            //Log("发送：" + string.Join(" ", sendData.ToArray()));
 
-            //读取反馈
-            Thread.Sleep(25);
-            byte[] rcvBuf =  serialPortC.ReadBuf(serialPort);
-            if (rcvBuf != null && rcvBuf.Length > 5 && rcvBuf[2] == Cmd)
-            {
-                switch (rcvBuf[3])
-                {
-                    case 0x00:
-                        Log("执行成功，命令代码：" + Cmd);
-                        return true;
-                    case 0x80:
-                        Log("数据包处理错误,命令代码："+Cmd);
-                        break;
-                    case 0x81:
-                        Log("不支持此命令,命令代码：" + Cmd);
-                        break;
-                    case 0x82:
-                        Log("数据域校验错误,命令代码：" + Cmd);
-                        break;
-                    case 0x83:
-                        Log("命令操作失败,命令代码：" + Cmd);
-                        break;
-                    default:
-                        break;
-                }
-            }
-            return false;          
+            return true;
         }
 
-        
+
 
         private byte[] getUnixTime()
         {
@@ -208,7 +197,11 @@ namespace RobotofCouldminds
             return System.BitConverter.GetBytes(timeStamp);
         }
 
-     
+        private short byteToshort(byte H, byte L)
+        {
+            byte[] temp = { H, L };
+            return BitConverter.ToInt16(temp, 0);
+        }
 
 
         private void comboBoxRobotNum_SelectedIndexChanged(object sender, EventArgs e)
@@ -218,193 +211,249 @@ namespace RobotofCouldminds
 
         private void comboBoxTrackNum_SelectedIndexChanged(object sender, EventArgs e)
         {
-            RobotNum =(byte)(comboBoxTrackNum.SelectedIndex * 16 + comboBoxRobotNum.SelectedIndex);
+            RobotNum = (byte)(comboBoxTrackNum.SelectedIndex * 16 + comboBoxRobotNum.SelectedIndex);
         }
         private void UpDownTurn_ValueChanged(object sender, EventArgs e)
         {
-            if(UpDownTurn.Value>=0)
-                ForntAngle[0] = (byte)(UpDownTurn.Value);
+            if (UpDownTurn.Value >= 0)
+                AngleAndSpeed[0] = (byte)(UpDownTurn.Value);
             else
-                ForntAngle[0] = (byte)(UpDownTurn.Value+256);
-            if (sendBuf(Seq, 0x83, State, ForntAngle))
-            {
-                Log("方向设定成功");
-            }
-            else
-            {
-                Log("方向设定失败");
-            }
+                AngleAndSpeed[0] = (byte)(UpDownTurn.Value + 256);
         }
 
         private void UpDownSpeed_ValueChanged(object sender, EventArgs e)
         {
-           // speed = (short)UpDownSpeed.Value;
-            if (sendBuf(Seq, 0x84, State, BitConverter.GetBytes((short)UpDownSpeed.Value)))
-            {
-                Log("速度设定成功");
-            }
-            else
-            {
-                Log("速度设定失败");
-            }
+            byte[] speed = BitConverter.GetBytes((short)UpDownSpeed.Value);
+            AngleAndSpeed[1] = speed[0];
+            AngleAndSpeed[2] = speed[1];
         }
 
 
         private void myButtonCheckHeadlingt_Click(object sender, EventArgs e)
         {
+            isSendBufEnable = false;
             if (myButtonCheckHeadlingt.Checked)
             {
-                myButtonCheckHeadlingt.Checked = sendBuf(Seq, 0x85, State, on);
+                sendBuf(Seq, 0x85, State, on);
             }
             else
             {
-                myButtonCheckHeadlingt.Checked = !sendBuf(Seq, 0x85, State, off);
-            }         
-
+                sendBuf(Seq, 0x85, State, off);
+            }
+            isSendBufEnable = true;
         }
 
         private void myButtonCheckRearLight_Click(object sender, EventArgs e)
         {
+            isSendBufEnable = false;
             if (myButtonCheckRearLight.Checked)
             {
-                myButtonCheckRearLight.Checked = sendBuf(Seq, 0x86, State, on);
+                sendBuf(Seq, 0x86, State, on);
             }
             else
             {
-                myButtonCheckRearLight.Checked = !sendBuf(Seq, 0x86, State, off);
+                sendBuf(Seq, 0x86, State, off);
             }
+            isSendBufEnable = true;
         }
 
         private void myButtonCheckFrontFlashingLight_Click(object sender, EventArgs e)
         {
+            isSendBufEnable = false;
             if (myButtonCheckFrontFlashingLight.Checked)
             {
-                myButtonCheckFrontFlashingLight.Checked = sendBuf(Seq, 0x85, State, onf);
+                sendBuf(Seq, 0x85, State, onf);
             }
-            else if(myButtonCheckHeadlingt.Checked)
+            else if (myButtonCheckHeadlingt.Checked)
             {
-                myButtonCheckFrontFlashingLight.Checked = !sendBuf(Seq, 0x85, State, on);
+                sendBuf(Seq, 0x85, State, on);
             }
             else
             {
-                myButtonCheckFrontFlashingLight.Checked = !sendBuf(Seq, 0x85, State, off);
+                sendBuf(Seq, 0x85, State, off);
             }
+            isSendBufEnable = true;
         }
 
         private void myButtonCheckBrake_Click(object sender, EventArgs e)
         {
+            isSendBufEnable = false;
             if (myButtonCheckBrake.Checked)
             {
-                myButtonCheckBrake.Checked = sendBuf(Seq, 0x87, State, on);
+                sendBuf(Seq, 0x87, State, on);
             }
             else
             {
-                myButtonCheckBrake.Checked = !sendBuf(Seq, 0x87, State, off);
+                sendBuf(Seq, 0x87, State, off);
             }
+            isSendBufEnable = true;
         }
-       
+
 
         private void myButtonCheckTurnLeft_Click(object sender, EventArgs e)
         {
+            isSendBufEnable = false;
             if (myButtonCheckTurnLeft.Checked)
             {
-                myButtonCheckTurnLeft.Checked = sendBuf(Seq, 0x88, State, on);
+                sendBuf(Seq, 0x88, State, on);
             }
             else
             {
-                myButtonCheckTurnLeft.Checked = !sendBuf(Seq, 0x88, State, off);
+                sendBuf(Seq, 0x88, State, off);
             }
+            isSendBufEnable = true;
         }
 
         private void myButtonCheckTurnRight_Click(object sender, EventArgs e)
         {
+            isSendBufEnable = false;
             if (myButtonCheckTurnRight.Checked)
             {
-                myButtonCheckTurnRight.Checked = sendBuf(Seq, 0x89, State, on);
+                sendBuf(Seq, 0x89, State, on);
             }
             else
             {
-                myButtonCheckTurnRight.Checked = !sendBuf(Seq, 0x89, State, off);
+                sendBuf(Seq, 0x89, State, off);
             }
+            isSendBufEnable = true;
         }
         private void myButtonCheckArmLight_Click(object sender, EventArgs e)
         {
+            isSendBufEnable = false;
             if (myButtonCheckArmLight.Checked)
             {
-                myButtonCheckArmLight.Checked = sendBuf(Seq, 0x8A, State, on);
+                sendBuf(Seq, 0x8A, State, on);
             }
             else
             {
-                myButtonCheckArmLight.Checked = !sendBuf(Seq, 0x8A, State, off);
+                sendBuf(Seq, 0x8A, State, off);
             }
+            isSendBufEnable = true;
         }
         private void myButtonCheckHorn_Click(object sender, EventArgs e)
         {
+            isSendBufEnable = false;
             if (myButtonCheckHorn.Checked)
             {
-                myButtonCheckHorn.Checked = sendBuf(Seq, 0x8B, State, on);
+                sendBuf(Seq, 0x8B, State, on);
             }
             else
             {
-                myButtonCheckHorn.Checked = !sendBuf(Seq, 0x8B, State, off);
+                sendBuf(Seq, 0x8B, State, off);
             }
+            isSendBufEnable = true;
         }
 
         private void myButtonCheckVoice_Click(object sender, EventArgs e)
         {
+            isSendBufEnable = false;
             if (myButtonCheckVoice.Checked)
             {
-                myButtonCheckVoice.Checked = sendBuf(Seq, 0x8C, State, on);
+                sendBuf(Seq, 0x8C, State, on);
             }
             else
             {
-                myButtonCheckVoice.Checked = !sendBuf(Seq, 0x8C, State, off);
+                sendBuf(Seq, 0x8C, State, off);
             }
+            isSendBufEnable = true;
         }
 
         private void myButtonCheckModel_Click(object sender, EventArgs e)
         {
+            isSendBufEnable = false;
             if (myButtonCheckModel.Checked)
             {
-                myButtonCheckModel.Checked = sendBuf(Seq, 0x8D, State, on);
+                sendBuf(Seq, 0x8D, State, on);
             }
             else
             {
-                myButtonCheckModel.Checked = !sendBuf(Seq, 0x8D, State, off);
+                sendBuf(Seq, 0x8D, State, off);
             }
+            isSendBufEnable = true;
         }
 
         private void myButtonCheckCloudDown_Click(object sender, EventArgs e)
         {
+            isSendBufEnable = false;
             if (myButtonCheckCloudDown.Checked)
             {
-                myButtonCheckCloudDown.Checked = sendBuf(Seq, 0x8E, State, off);
-                if (myButtonCheckCloudDown.Checked)
-                {
-                    myButtonCheckCloudUp.Checked = false;
-                }
+                sendBuf(Seq, 0x8E, State, off);
+                myButtonCheckCloudUp.Checked = false;
             }
             else
             {
-                myButtonCheckCloudDown.Checked = !sendBuf(Seq, 0x8E, State, onf);             
-            }         
+                sendBuf(Seq, 0x8E, State, onf);
+            }
+            isSendBufEnable = true;
         }
 
         private void myButtonCheckCloudUp_Click(object sender, EventArgs e)
         {
+            isSendBufEnable = false;
             if (myButtonCheckCloudUp.Checked)
             {
-                myButtonCheckCloudUp.Checked = sendBuf(Seq, 0x8E, State, on);
-                if (myButtonCheckCloudUp.Checked)
-                {
-                    myButtonCheckCloudDown.Checked = false;
-                }
+                sendBuf(Seq, 0x8E, State, on);
+                myButtonCheckCloudDown.Checked = false;
             }
             else
             {
-                myButtonCheckCloudUp.Checked = !sendBuf(Seq, 0x8E, State, onf);
-                myButtonCheckCloudDown.Checked = myButtonCheckCloudUp.Checked;
+                sendBuf(Seq, 0x8E, State, onf);
+            }
+            isSendBufEnable = true;
+        }
+
+        private void buttonClearText_Click(object sender, EventArgs e)
+        {
+            textBoxLog.Text = "";
+        }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            if (isSendBufEnable)
+            {
+                sendBuf(Seq, 0x8F, State, AngleAndSpeed);
+            }
+
+
+            //读取反馈
+            Thread.Sleep(25);
+            byte[] rcvBuf = serialPortC.ReadBuf(serialPort);
+            if (rcvBuf != null && rcvBuf.Length > 1)
+            {
+                //Log("接受：" + string.Join(" ", rcvBuf));
+                Log("接受：" + BitConverter.ToString(rcvBuf));
+            }
+            if (rcvBuf != null)
+            {
+                if (rcvBuf.Length == 6)
+                {
+                    switch (rcvBuf[3])
+                    {
+                        case 0x00:
+                            Log("执行成功，命令代码：" + rcvBuf[2]);
+                            break;
+                        case 0x80:
+                            Log("数据包处理错误,命令代码：" + rcvBuf[2]);
+                            break;
+                        case 0x81:
+                            Log("不支持此命令,命令代码：" + rcvBuf[2]);
+                            break;
+                        case 0x82:
+                            Log("数据域校验错误,命令代码：" + rcvBuf[2]);
+                            break;
+                        case 0x83:
+                            Log("命令操作失败,命令代码：" + rcvBuf[2]);
+                            break;
+                        default:
+                            break;
+                    }
+                }
+                else if (rcvBuf.Length == 40)
+                {
+
+                }
             }
         }
+
     }
 }

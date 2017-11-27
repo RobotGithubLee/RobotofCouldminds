@@ -31,7 +31,7 @@ namespace RobotofCouldminds
                 Array.Sort(ports);
                 com.BaudRate = 38400;
                 com.DataBits = 8;
-                com.Parity = (Parity)2;
+                com.Parity = (Parity)0;
                 com.StopBits = (StopBits)1;
 
             }
@@ -114,8 +114,12 @@ namespace RobotofCouldminds
                 int n = com.BytesToRead;
                 recBuf = new byte[n];
                 com.Read(recBuf, 0, n);//读取缓冲数据 
-              //  com.DiscardOutBuffer();
-            }
+                                       //  com.DiscardOutBuffer();
+                if (recBuf != null && recBuf.Length > 1)
+                {
+                    int d = 0;
+                }
+                }
             catch (Exception ex)
             {
                 MessageBox.Show(ex.ToString());
