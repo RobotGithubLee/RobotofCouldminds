@@ -184,7 +184,8 @@ namespace RobotofCouldminds
             sendData.Add(X);           //异或校验位
 
             serialPortC.WriteBuf(serialPort, sendData.ToArray());
-            //Log("发送：" + string.Join(" ", sendData.ToArray()));
+            Log("发送：" + string.Join(" ", BitConverter.ToString(sendData.ToArray()).Replace("-", " ")));
+
 
             return true;
         }
@@ -421,7 +422,7 @@ namespace RobotofCouldminds
             if (rcvBuf != null && rcvBuf.Length > 1)
             {
                 //Log("接受：" + string.Join(" ", rcvBuf));
-                Log("接受：" + BitConverter.ToString(rcvBuf));
+                Log("接受：" + BitConverter.ToString(rcvBuf).Replace("-"," "));
             }
             if (rcvBuf != null)
             {
@@ -448,7 +449,7 @@ namespace RobotofCouldminds
                             break;
                     }
                 }
-                else if (rcvBuf.Length == 40)
+                else if (rcvBuf.Length >= 40)
                 {
                     string[] Sensor = (Convert.ToString(rcvBuf[25], 2)).Split();
                 }
